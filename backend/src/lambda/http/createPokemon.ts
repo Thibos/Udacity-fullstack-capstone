@@ -1,9 +1,9 @@
 import 'source-map-support/register';
 import { APIGatewayProxyEvent, APIGatewayProxyHandler, APIGatewayProxyResult } from 'aws-lambda';
-import {createTodo} from '../../BusinessLogic/todoItems';
+import {createPokemon} from '../../BusinessLogic/pokemonItems';
 export const handler: APIGatewayProxyHandler = async (event: APIGatewayProxyEvent): Promise<APIGatewayProxyResult> => {
   // TODO: Implement creating a new TODO item
-  const item = await createTodo(event)
+  const item = await createPokemon(event)
 
   return {
     statusCode: 200,

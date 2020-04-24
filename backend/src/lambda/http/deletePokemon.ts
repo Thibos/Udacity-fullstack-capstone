@@ -1,9 +1,9 @@
 import 'source-map-support/register';
-import {deleteTodo} from '../../BusinessLogic/todoItems';
+import {deletePokemon} from '../../BusinessLogic/pokemonItems';
 import { APIGatewayProxyEvent, APIGatewayProxyResult, APIGatewayProxyHandler } from 'aws-lambda';
 export const handler: APIGatewayProxyHandler = async (event: APIGatewayProxyEvent): Promise<APIGatewayProxyResult> => {
   // TODO: Remove a TODO item by id
-  const deleted = await deleteTodo(event);
+  const deleted = await deletePokemon(event);
   return {
     statusCode: 200,
     headers: {

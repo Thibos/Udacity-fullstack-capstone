@@ -1,5 +1,5 @@
 import 'source-map-support/register';
-import {generateUploadUrl} from '../../BusinessLogic/todoItems';
+import {generateUploadUrl} from '../../BusinessLogic/pokemonItems';
 
 import { APIGatewayProxyEvent, APIGatewayProxyResult, APIGatewayProxyHandler } from 'aws-lambda';
 

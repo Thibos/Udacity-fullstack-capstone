@@ -1,15 +1,15 @@
 {
 	"info": {
 		"_postman_id": "7c493047-c4b9-47f8-8eb7-da40901d489a",
-		"name": "Udacity C4 Project",
+		"name": "Udacity Project",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [
 		{
-			"name": "TODOs",
+			"name": "POKEMONS",
 			"item": [
 				{
-					"name": "Get all todos",
+					"name": "Get all pokemons",
 					"request": {
 						"method": "GET",
 						"header": [
@@ -20,7 +20,7 @@
 							}
 						],
 						"url": {
-							"raw": "https://{{apiId}}.execute-api.us-west-1.amazonaws.com/dev/todos",
+							"raw": "https://{{apiId}}.execute-api.us-west-1.amazonaws.com/dev/pokemons",
 							"protocol": "https",
 							"host": [
 								"{{apiId}}",
@@ -31,14 +31,14 @@
 							],
 							"path": [
 								"dev",
-								"todos"
+								"pokemons"
 							]
 						}
 					},
 					"response": []
 				},
 				{
-					"name": "Create todo",
+					"name": "Create pokemon",
 					"request": {
 						"method": "POST",
 						"header": [
@@ -56,10 +56,10 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"createdAt\": \"2019-07-27T20:01:45.424Z\",\n  \"name\": \"Buy milk 3\",\n  \"dueDate\": \"2019-07-29T20:01:45.424Z\",\n  \"done\": false,\n  \"attachmentUrl\": \"http://example.com/image.png\"\n}"
+							"raw": "{\n  \"createdAt\": \"2019-07-27T20:01:45.424Z\",\n  \"name\": \"Buy milk 3\",\n  \"dueDate\": \"2019-07-29T20:01:45.424Z\",\n  \"attachmentUrl\": \"http://example.com/image.png\"\n}"
 						},
 						"url": {
-							"raw": "https://{{apiId}}.execute-api.us-west-1.amazonaws.com/dev/todos",
+							"raw": "https://{{apiId}}.execute-api.us-west-1.amazonaws.com/dev/pokemons",
 							"protocol": "https",
 							"host": [
 								"{{apiId}}",
@@ -70,14 +70,14 @@
 							],
 							"path": [
 								"dev",
-								"todos"
+								"pokemons"
 							]
 						}
 					},
 					"response": []
 				},
 				{
-					"name": "Update todo",
+					"name": "Update pokemon",
 					"request": {
 						"method": "PATCH",
 						"header": [
@@ -95,10 +95,10 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n\t\"name\": \"Change the world\",\n\t\"dueDate\": \"2019-12-11\",\n\t\"done\": true\n}"
+							"raw": "{\n\t\"name\": \"Change the world\",\n\t\"dueDate\": \"2019-12-11\"}"
 						},
 						"url": {
-							"raw": "https://{{apiId}}.execute-api.us-west-1.amazonaws.com/dev/todos/7a01cdbd-374f-4ca5-9846-baea342965f3",
+							"raw": "https://{{apiId}}.execute-api.us-west-1.amazonaws.com/dev/pokemons/7a01cdbd-374f-4ca5-9846-baea342965f3",
 							"protocol": "https",
 							"host": [
 								"{{apiId}}",
@@ -109,7 +109,7 @@
 							],
 							"path": [
 								"dev",
-								"todos",
+								"pokemons",
 								"7a01cdbd-374f-4ca5-9846-baea342965f3"
 							]
 						}
@@ -117,7 +117,7 @@
 					"response": []
 				},
 				{
-					"name": "Delete todo",
+					"name": "Delete pokemons",
 					"request": {
 						"method": "DELETE",
 						"header": [
@@ -138,7 +138,7 @@
 							"raw": ""
 						},
 						"url": {
-							"raw": "https://{{apiId}}.execute-api.us-west-1.amazonaws.com/dev/todos/7a212070-3410-4d5e-a354-2a97fcaabf30",
+							"raw": "https://{{apiId}}.execute-api.us-west-1.amazonaws.com/dev/pokemons/7a212070-3410-4d5e-a354-2a97fcaabf30",
 							"protocol": "https",
 							"host": [
 								"{{apiId}}",
@@ -149,7 +149,7 @@
 							],
 							"path": [
 								"dev",
-								"todos",
+								"pokemons",
 								"7a212070-3410-4d5e-a354-2a97fcaabf30"
 							]
 						}
@@ -172,7 +172,7 @@
 							"raw": ""
 						},
 						"url": {
-							"raw": "https://{{apiId}}.execute-api.us-west-1.amazonaws.com/dev/todos/db3e7a90-720e-468e-8960-880e7b407258/attachment",
+							"raw": "https://{{apiId}}.execute-api.us-west-1.amazonaws.com/dev/pokemons/db3e7a90-720e-468e-8960-880e7b407258/attachment",
 							"protocol": "https",
 							"host": [
 								"{{apiId}}",
@@ -183,7 +183,7 @@
 							],
 							"path": [
 								"dev",
-								"todos",
+								"pokemons",
 								"db3e7a90-720e-468e-8960-880e7b407258",
 								"attachment"
 							]
@@ -254,7 +254,7 @@
 		{
 			"id": "0c30025b-7389-42d3-8242-6f8b70131b2d",
 			"key": "apiId",
-			"value": "hrrusb3d7i",
+			"value": "kegt917zc3",
 			"type": "string"
 		},
 		{

@@ -1,5 +1,5 @@
 service:
-    name: serverless-todos-app-thabo
+    name: serverless-pokemon-app
 
 plugins:
     - serverless-webpack
@@ -18,10 +18,10 @@ provider:
       apiGateway: true 
   
     environment:
-      TODOS_TABLE: TodosTable-${self:provider.stage}
+      POKEMONS_TABLE: PokemonTable-${self:provider.stage}
       USER_INDEX: UserIndex
       AUTH_0_SECRET: wWvX0xcc41oxAV6WZioeNZpfMuF8mTKIQdfVQwPa0Tm8qig3gwHUlsxkjCkGVOO3
-      S3_BUCKET: serverless-todos-thabo-${self:provider.stage}
+      S3_BUCKET: serverless-pokemon-thabo-${self:provider.stage}
       SIGNED_EXPIRATION: 300
 
     iamRoleStatements:
@@ -39,77 +39,77 @@ functions:
     handler: src/lambda/auth/auth0Authorizer.handler
   
     # TODO: Configure this function
-  GetTodos:
-    handler: src/lambda/http/getTodos.handler
+  GetPokemons:
+    handler: src/lambda/http/getPokemons.handler
     events:
       - http:
           method: get
-          path: todos
+          path: pokemons
           cors: true
     iamRoleStatementsInherit: true
-    iamRoleStatementsName: ${self:service.name}-get-todos-role-${self:provider.stage}
+    iamRoleStatementsName: ${self:service.name}-get-pokemons-role-${self:provider.stage}
     iamRoleStatements:
       - Effect: Allow
         Action:
           - dynamodb:Query
-        Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.TODOS_TABLE}
+        Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.POKEMONS_TABLE}
       - Effect: Allow
         Action:
           - dynamodb:Query
-        Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.TODOS_TABLE}/index/${self:provider.environment.USER_INDEX}
+        Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.POKEMONS_TABLE}/index/${self:provider.environment.USER_INDEX}
       
   
 
-  CreateTodo:
-    handler: src/lambda/http/createTodo.handler
+  CreatePokemon:
+    handler: src/lambda/http/createPokemon.handler
     events:
       - http:
           method: post
-          path: todos
+          path: pokemons
           cors: true
     iamRoleStatementsInherit: true
-    iamRoleStatementsName: ${self:service.name}-create-todo-role-${self:provider.stage}
+    iamRoleStatementsName: ${self:service.name}-create-pokemon-role-${self:provider.stage}
     iamRoleStatements:
       - Effect: Allow
         Action:
           - dynamodb:PutItem
-        Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.TODOS_TABLE}
+        Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.POKEMONS_TABLE}
       
   
     # TODO: Configure this function
   
-  UpdateTodo:
-    handler: src/lambda/http/updateTodo.handler
+  UpdatePokemon:
+    handler: src/lambda/http/updatePokemon.handler
     events:
       - http:
           method: patch
-          path: todos/{todoId}
+          path: pokemons/{pokemonId}
           cors: true
     iamRoleStatementsInherit: true
-    iamRoleStatementsName: ${self:service.name}-update-todo-role-${self:provider.stage}
+    iamRoleStatementsName: ${self:service.name}-update-pokemon-role-${self:provider.stage}
     iamRoleStatements:
       - Effect: Allow
         Action:
           - dynamodb:UpdateItem
-        Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.TODOS_TABLE}
+        Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.POKEMONS_TABLE}
       
   
     # TODO: Configure this function
   
-  DeleteTodo:
-    handler: src/lambda/http/deleteTodo.handler
+  DeletePokemon:
+    handler: src/lambda/http/deletePokemon.handler
     events:
       - http:
           method: delete
-          path: todos/{todoId}
+          path: pokemons/{pokemonId}
           cors: true
     iamRoleStatementsInherit: true
-    iamRoleStatementsName: ${self:service.name}-delete-todo-role-${self:provider.stage}
+    iamRoleStatementsName: ${self:service.name}-delete-pokemon-role-${self:provider.stage}
     iamRoleStatements:
       - Effect: Allow
         Action:
           - dynamodb:DeleteItem
-        Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.TODOS_TABLE}
+        Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.POKEMONS_TABLE}
       
     # TODO: Configure this function
   
@@ -118,7 +118,7 @@ functions:
     events:
       - http:
           method: post
-          path: todos/{todoId}/attachment
+          path: pokemons/{pokemonId}/attachment
           cors: true
     iamRoleStatementsInherit: true
     iamRoleStatementsName: ${self:service.name}-generate-url-role-${self:provider.stage}
@@ -126,7 +126,7 @@ functions:
       - Effect: Allow
         Action:
           - dynamodb:UpdateItem
-        Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.TODOS_TABLE}
+        Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.POKEMONS_TABLE}
       - Effect: Allow
         Action:
           - s3:PutObject
@@ -137,7 +137,7 @@ functions:
 resources:
   Resources:
      # TODO: Add any necessary AWS resources
-    TodosTable:
+    PokemonsTable:
       Type: AWS::DynamoDB::Table
       Properties:
         AttributeDefinitions:
@@ -145,15 +145,15 @@ resources:
             AttributeType: S
           - AttributeName: createdAt
             AttributeType: S
-          - AttributeName: todoId
+          - AttributeName: pokemonId
             AttributeType: S
         KeySchema:
           - AttributeName: userId
             KeyType: HASH
-          - AttributeName: todoId 
+          - AttributeName: pokemonId 
             KeyType: RANGE
         BillingMode: PAY_PER_REQUEST
-        TableName: ${self:provider.environment.TODOS_TABLE}
+        TableName: ${self:provider.environment.POKEMONS_TABLE}
         GlobalSecondaryIndexes:
           - IndexName: ${self:provider.environment.USER_INDEX}
             KeySchema:

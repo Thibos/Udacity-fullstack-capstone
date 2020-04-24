@@ -1,9 +1,9 @@
-export interface TodoItem {
+export interface PokemonItem {
   userId: string
-  todoId: string
+  pokemonId: string
   createdAt: string
   name: string
   dueDate: string
-  done: boolean
+  type: string
   attachmentUrl?: string
 }

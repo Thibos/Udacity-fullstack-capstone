@@ -1,6 +1,5 @@
 .App {
   text-align: center;
-  background-image: url("/public/background.jpg");
 }
 
 .App-logo {
@@ -8,14 +7,9 @@
   height: 40vmin;
   pointer-events: none;
 }
-.App-body {
-  background-image: url("/public/background.jpg");
- 
-}
 
 .App-header {
   background-color: #282c34;
-  
   min-height: 100vh;
   display: flex;
   flex-direction: column;

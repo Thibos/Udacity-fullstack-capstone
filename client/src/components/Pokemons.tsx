@@ -14,106 +14,106 @@ import {
   Loader
 } from 'semantic-ui-react'
 
-import { createTodo, deleteTodo, getTodos, patchTodo } from '../api/todos-api'
+import { createPokemon, deletePokemon, getPokemons, patchPokemon } from '../api/pokemons-api'
 import Auth from '../auth/Auth'
-import { Todo } from '../types/Todo'
+import { Pokemon } from '../types/Pokemon'
 
-interface TodosProps {
+interface PokemonsProps {
   auth: Auth
   history: History
 }
 
-interface TodosState {
-  todos: Todo[]
-  newTodoName: string
-  loadingTodos: boolean
+interface PokemonsState {
+  pokemons: Pokemon[]
+  newPokemonName: string
+  loadingPokemons: boolean
 }
 
-export class Todos extends React.PureComponent<TodosProps, TodosState> {
-  state: TodosState = {
-    todos: [],
-    newTodoName: '',
-    loadingTodos: true
+export class Pokemons extends React.PureComponent<PokemonsProps, PokemonsState> {
+  state: PokemonsState = {
+    pokemons: [],
+    newPokemonName: '',
+    loadingPokemons: true
   }
 
   handleNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    this.setState({ newTodoName: event.target.value })
+    this.setState({ newPokemonName: event.target.value })
   }
 
-  onEditButtonClick = (todoId: string) => {
-    this.props.history.push(`/todos/${todoId}/edit`)
+  onEditButtonClick = (pokemonId: string) => {
+    this.props.history.push(`/pokemons/${pokemonId}/edit`)
   }
 
-  onTodoCreate = async (event: React.ChangeEvent<HTMLButtonElement>) => {
+  onPokemonCreate = async (event: React.ChangeEvent<HTMLButtonElement>) => {
     try {
       const dueDate = this.calculateDueDate()
-      const newTodo = await createTodo(this.props.auth.getIdToken(), {
-        name: this.state.newTodoName,
+      const newPokemon = await createPokemon(this.props.auth.getIdToken(), {
+        name: this.state.newPokemonName,
         dueDate
       })
       this.setState({
-        todos: [...this.state.todos, newTodo],
-        newTodoName: ''
+        pokemons: [...this.state.pokemons, newPokemon],
+        newPokemonName: ''
       })
     } catch {
-      alert('Todo creation failed')
+      alert('pokemon creation failed')
     }
   }
 
-  onTodoDelete = async (todoId: string) => {
+  onPokemonDelete = async (pokemonId: string) => {
     try {
-      await deleteTodo(this.props.auth.getIdToken(), todoId)
+      await deletePokemon(this.props.auth.getIdToken(), pokemonId)
       this.setState({
-        todos: this.state.todos.filter(todo => todo.todoId != todoId)
+        pokemons: this.state.pokemons.filter(pokemon => pokemon.pokemonId != pokemonId)
       })
     } catch {
-      alert('Todo deletion failed')
+      alert('pokemon deletion failed')
     }
   }
 
-  onTodoCheck = async (pos: number) => {
+  onPokemonCheck = async (pos: number) => {
     try {
-      const todo = this.state.todos[pos]
-      await patchTodo(this.props.auth.getIdToken(), todo.todoId, {
-        name: todo.name,
-        dueDate: todo.dueDate,
-        done: !todo.done
+      const pokemon = this.state.pokemons[pos]
+      await patchPokemon(this.props.auth.getIdToken(), pokemon.pokemonId, {
+        name: pokemon.name,
+        dueDate: pokemon.dueDate,
+        type: pokemon.type
       })
       this.setState({
-        todos: update(this.state.todos, {
-          [pos]: { done: { $set: !todo.done } }
+        pokemons: update(this.state.pokemons, {
+          [pos]: { type: { $set: pokemon.type } }
         })
       })
     } catch {
-      alert('Todo deletion failed')
+      alert('pokemon deletion failed')
     }
   }
 
   async componentDidMount() {
     try {
-      const todos = await getTodos(this.props.auth.getIdToken())
+      const pokemons = await getPokemons(this.props.auth.getIdToken())
       this.setState({
-        todos,
-        loadingTodos: false
+        pokemons,
+        loadingPokemons: false
       })
     } catch (e) {
-      alert(`Failed to fetch todos: ${e.message}`)
+      alert(`Failed to fetch pokemons: ${e.message}`)
     }
   }
 
   render() {
     return (
       <div>
-        <Header as="h1">Task List</Header>
+        <Header as="h1">Pokemon Collection</Header>
 
-        {this.renderCreateTodoInput()}
+        {this.renderCreatePokemonInput()}
 
-        {this.renderTodos()}
+        {this.renderPokemons()}
       </div>
     )
   }
 
-  renderCreateTodoInput() {
+  renderCreatePokemonInput() {
     return (
       <Grid.Row>
         <Grid.Column width={16}>
@@ -122,8 +122,8 @@ export class Todos extends React.PureComponent<TodosProps, TodosState> {
               color: 'teal',
               labelPosition: 'left',
               icon: 'add',
-              content: 'New task',
-              onClick: this.onTodoCreate
+              content: 'New Pokemon',
+              onClick: this.onPokemonCreate
             }}
             fluid
             actionPosition="left"
@@ -138,47 +138,46 @@ export class Todos extends React.PureComponent<TodosProps, TodosState> {
     )
   }
 
-  renderTodos() {
-    if (this.state.loadingTodos) {
+  renderPokemons() {
+    if (this.state.loadingPokemons) {
       return this.renderLoading()
     }
 
-    return this.renderTodosList()
+    return this.renderPokemonList()
   }
 
   renderLoading() {
     return (
       <Grid.Row>
         <Loader indeterminate active inline="centered">
-          Loading Tasks
+          Loading Pokemons
         </Loader>
       </Grid.Row>
     )
   }
 
-  renderTodosList() {
+  renderPokemonList() {
     return (
-      <Grid padded>
-        {this.state.todos.map((todo, pos) => {
+
+  
+    <Grid padded>
+        {this.state.pokemons.map((pokemon, pos) => {
           return (
-            <Grid.Row key={todo.todoId}>
+            <Grid.Row key={pokemon.pokemonId}>
               <Grid.Column width={1} verticalAlign="middle">
-                <Checkbox
-                  onChange={() => this.onTodoCheck(pos)}
-                  checked={todo.done}
-                />
+              <h1>{pokemon.name}</h1>
               </Grid.Column>
               <Grid.Column width={10} verticalAlign="middle">
-                {todo.name}
+              
               </Grid.Column>
               <Grid.Column width={3} floated="right">
-                {todo.dueDate}
+                {pokemon.dueDate}
               </Grid.Column>
               <Grid.Column width={1} floated="right">
                 <Button
                   icon
                   color="blue"
-                  onClick={() => this.onEditButtonClick(todo.todoId)}
+                  onClick={() => this.onEditButtonClick(pokemon.pokemonId)}
                 >
                   <Icon name="pencil" />
                 </Button>
@@ -187,13 +186,13 @@ export class Todos extends React.PureComponent<TodosProps, TodosState> {
                 <Button
                   icon
                   color="red"
-                  onClick={() => this.onTodoDelete(todo.todoId)}
+                  onClick={() => this.onPokemonDelete(pokemon.pokemonId)}
                 >
                   <Icon name="delete" />
                 </Button>
               </Grid.Column>
-              {todo.attachmentUrl && (
-                <Image src={todo.attachmentUrl} size="small" wrapped />
+              {pokemon.attachmentUrl && (
+                <Image src={pokemon.attachmentUrl} size="small" wrapped />
               )}
               <Grid.Column width={16}>
                 <Divider />
@@ -209,6 +208,6 @@ export class Todos extends React.PureComponent<TodosProps, TodosState> {
     const date = new Date()
     date.setDate(date.getDate() + 7)
 
-    return dateFormat(date, 'dd-mm-yyyy') as string
+    return dateFormat(date, 'yyyy-mm-dd') as string
   }
 }

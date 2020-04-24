@@ -4,25 +4,25 @@ import { DocumentClient } from "aws-sdk/clients/dynamodb";
 
 const XAWS = AWSXRay.captureAWS(AWS);
 
-import { TodoItem } from "../models/TodoItem";
-import { TodoUpdate } from "../models/TodoUpdate";
+import { PokemonItem } from "../models/PokemonItem";
+import { PokemonUpdate } from "../models/PokemonUpdate";
 
-export class Todos 
+export class Pokemon 
 { constructor (
       private docClient: DocumentClient = createDynamoDBClient(),
       private S3 = createS3Bucket(),
-      private todosTable = process.env.TODOS_TABLE,
+      private pokemonsTable = process.env.POKEMONS_TABLE,
       private bucket = process.env.S3_BUCKET,
       private urlExp = process.env.SIGNED_EXPIRATION,
       private index = process.env.USER_INDEX
   ) {}
   
 
-  async getAll(userId: string): Promise<TodoItem[]> {
+  async getAll(userId: string): Promise<PokemonItem[]> {
     console.log("get all todos");
 
     const result = await this.docClient.query({
-          TableName: this.todosTable,
+          TableName: this.pokemonsTable,
           IndexName: this.index,
           KeyConditionExpression: "userId = :userId",
           ExpressionAttributeValues: {
@@ -31,53 +31,53 @@ export class Todos
       })
       .promise();
     const items = result.Items;
-    return items as TodoItem[];
+    return items as PokemonItem[];
   }
 
-  async createTodo(todo: TodoItem): Promise<TodoItem> {
+  async createPokemon(pokemon: PokemonItem): Promise<PokemonItem> {
       await this.docClient.put({
-          TableName: this.todosTable,
-          Item: todo
+          TableName: this.pokemonsTable,
+          Item: pokemon
       })
       .promise();
-    return todo;
+    return pokemon;
   }
 
-  async deleteTodo(todoId: string, userId: string) {
-      const deleteTodo = await this.docClient.delete({
-          TableName: this.todosTable,
-          Key: { userId, todoId }
+  async deletePokemon(pokemonId: string, userId: string) {
+      const deletePokemon = await this.docClient.delete({
+          TableName: this.pokemonsTable,
+          Key: { userId, pokemonId }
       })
       .promise();
-    return { Deleted: deleteTodo };
+    return { Deleted: deletePokemon };
   }
   
-  async updateTodo(userId: string, todoId: string, updatedTodo: TodoUpdate) {
-      const updtedTodo = await this.docClient.update({
-          TableName: this.todosTable,
-          Key: { userId, todoId },
+  async updatePokemon(userId: string, pokemonId: string, updatedPokemon: PokemonUpdate) {
+      const updtedPokemon = await this.docClient.update({
+          TableName: this.pokemonsTable,
+          Key: { userId, pokemonId },
           ExpressionAttributeNames: { "#N": "name" },
-          UpdateExpression: "set #N=:todoName, dueDate=:dueDate, done=:done",
+          UpdateExpression: "set #N=:pokemonName, dueDate=:dueDate, type=:type",
           ExpressionAttributeValues: {
-            ":todoName": updatedTodo.name,
-            ":dueDate": updatedTodo.dueDate,
-            ":done": updatedTodo.done
+            ":todoName": updatedPokemon.name,
+            ":dueDate": updatedPokemon.dueDate,
+            ":type": updatedPokemon.type
         },
         ReturnValues: "UPDATED_NEW"
       })
       .promise();
-    return { Updated: updtedTodo };
+    return { Updated: updtedPokemon };
   }
   
-  async generateUploadUrl(todoId: string, userId: string): Promise<string> {
+  async generateUploadUrl(pokemonId: string, userId: string): Promise<string> {
       const uploadUrl = this.S3.getSignedUrl("putObject", {
         Bucket: this.bucket,
-        Key: todoId,
+        Key: pokemonId,
         Expires: this.urlExp
     });
     await this.docClient.update({
-          TableName: this.todosTable,
-          Key: { userId, todoId },
+          TableName: this.pokemonsTable,
+          Key: { userId, pokemonId },
           UpdateExpression: "set attachmentUrl=:URL",
           ExpressionAttributeValues: {
             ":URL": uploadUrl.split("?")[0]

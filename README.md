@@ -1,30 +1,10 @@
-# Serverless Task App
+# Serverless Pokemon
 
-Serverless Task application where a user can pen down their daily tasks and related  images.
+This project implements a simple Pokemon application using AWS Lambda and Serverless framework. 
 
-## Functionality 
+# Functionality of the application
 
-- The application allows users to create, update, delete Tasks.
-- The application allows users to upload a file. 
-- The application only displays Tasks for a logged in user.
-- A user needs to authenticate in order to use an application
-
-## Codebase
-
-- The code is split into multiple layers separating business logic from I/O related code.
-- Code is implemented using async/await and Promises without using callbacks.
-
-## Best Pratices
-
-- All resources in the application are defined in the `serverless.yml` file.
-- Each function has its own set of permissions.
-- Application has sufficient monitoring.
-- HTTP requests are validated.
-
-## Architecture
-
-- Data is stored in a table with a composite key.
-- tasks are fetched using the `query()` method and not `scan()` method (which is less efficient on large datasets)
+This application will allow CRUD operation of Pokemon items. Each Pokemon item can optionally have an attachment image. Each user only has access to Pokemon items that he/she has created.
 
 
 # How to run the application
@@ -36,10 +16,10 @@ To deploy an application run the following commands:
 ```
 cd backend
 npm install
-npm sls deploy -v
+sls deploy -v
 ```
 
-## Client
+## Frontend
 
 To run a client application first edit the `client/src/config.ts` file to set correct parameters. And then run the following commands:
 
@@ -48,3 +28,13 @@ cd client
 npm install
 npm run start
 ```
+
+This should start a development server with the React application that will interact with the serverless Pokemon application.
+
+# Reference 
+
+<https://github.com/udacity/cloud-developer/tree/master/course-04/project/c4-final-project-starter-code>
+<https://github.com/pravinyo/udacity-cloud-developer-capstone>
+<https://github.com/viralharia/udacity-cloud-developer-capstone>
+
+

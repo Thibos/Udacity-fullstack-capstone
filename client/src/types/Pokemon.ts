@@ -1,8 +1,8 @@
-export interface Todo {
-  todoId: string
+export interface Pokemon {
+  pokemonId: string
   createdAt: string
   name: string
   dueDate: string
-  done: boolean
+  type: string
   attachmentUrl?: string
 }

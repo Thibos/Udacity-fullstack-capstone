@@ -1,27 +1,27 @@
 import { apiEndpoint } from '../config'
-import { Todo } from '../types/Todo';
-import { CreateTodoRequest } from '../types/CreateTodoRequest';
+import { Pokemon } from '../types/Pokemon';
+import { CreatePokemonRequest } from '../types/CreatePokemonRequest';
 import Axios from 'axios'
-import { UpdateTodoRequest } from '../types/UpdateTodoRequest';
+import { UpdatePokemonRequest } from '../types/UpdatePokemonRequest';
 
-export async function getTodos(idToken: string): Promise<Todo[]> {
-  console.log('Fetching todos')
+export async function getPokemons(idToken: string): Promise<Pokemon[]> {
+  console.log('Fetching Pokemon')
 
-  const response = await Axios.get(`${apiEndpoint}/todos`, {
+  const response = await Axios.get(`${apiEndpoint}/pokemons`, {
     headers: {
       'Content-Type': 'application/json',
       'Authorization': `Bearer ${idToken}`
     },
   })
-  console.log('Todos:', response.data)
+  console.log('Pokemons:', response.data)
   return response.data.items
 }
 
-export async function createTodo(
+export async function createPokemon(
   idToken: string,
-  newTodo: CreateTodoRequest
-): Promise<Todo> {
-  const response = await Axios.post(`${apiEndpoint}/todos`,  JSON.stringify(newTodo), {
+  newPokemon: CreatePokemonRequest
+): Promise<Pokemon> {
+  const response = await Axios.post(`${apiEndpoint}/pokemons`,  JSON.stringify(newPokemon), {
     headers: {
       'Content-Type': 'application/json',
       'Authorization': `Bearer ${idToken}`
@@ -32,12 +32,12 @@ export async function createTodo(
   return response.data.item
 }
 
-export async function patchTodo(
+export async function patchPokemon(
   idToken: string,
-  todoId: string,
-  updatedTodo: UpdateTodoRequest
+  pokemonId: string,
+  updatedPokemon: UpdatePokemonRequest
 ): Promise<void> {
-  await Axios.patch(`${apiEndpoint}/todos/${todoId}`, JSON.stringify(updatedTodo), {
+  await Axios.patch(`${apiEndpoint}/pokemons/${pokemonId}`, JSON.stringify(updatedPokemon), {
     headers: {
       'Content-Type': 'application/json',
       'Authorization': `Bearer ${idToken}`
@@ -45,11 +45,11 @@ export async function patchTodo(
   })
 }
 
-export async function deleteTodo(
+export async function deletePokemon(
   idToken: string,
-  todoId: string
+  pokemonId: string
 ): Promise<void> {
-  await Axios.delete(`${apiEndpoint}/todos/${todoId}`, {
+  await Axios.delete(`${apiEndpoint}/pokemons/${pokemonId}`, {
     headers: {
       'Content-Type': 'application/json',
       'Authorization': `Bearer ${idToken}`
@@ -59,9 +59,9 @@ export async function deleteTodo(
 
 export async function getUploadUrl(
   idToken: string,
-  todoId: string
+  pokemonId: string
 ): Promise<string> {
-  const response = await Axios.post(`${apiEndpoint}/todos/${todoId}/attachment`, '', {
+  const response = await Axios.post(`${apiEndpoint}/pokemons/${pokemonId}/attachment`, '', {
     headers: {
       'Content-Type': 'application/json',
       'Authorization': `Bearer ${idToken}`
